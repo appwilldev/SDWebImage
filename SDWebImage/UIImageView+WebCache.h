@@ -118,4 +118,14 @@
  */
 - (void)cancelCurrentImageLoad;
 
+#pragma mark - Add UIActivityIndicatorView
+- (void)setImageWithURL:(NSURL *)url style:(UIActivityIndicatorViewStyle)style;
+- (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholder
+                  style:(UIActivityIndicatorViewStyle)style;
+- (void)setImageWithURL:(NSURL *)url
+                  style:(UIActivityIndicatorViewStyle)style
+                success:(void (^)(UIImage *image))success
+                failure:(void (^)(NSError *error))failure;
+
 @end

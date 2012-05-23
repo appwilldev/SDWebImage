@@ -64,17 +64,80 @@
 
 - (void)cancelCurrentImageLoad
 {
+    [self hideActivity];
+
     [[SDWebImageManager sharedManager] cancelForDelegate:self];
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didProgressWithPartialImage:(UIImage *)image forURL:(NSURL *)url
 {
+    [self hideActivity];
+
     self.image = image;
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
 {
+    [self hideActivity];
+
     self.image = image;
+}
+
+#pragma mark - Add UIActivityIndicatorView
+#define kActivityViewTag 55404
+- (void)showActivityWithStyle:(UIActivityIndicatorViewStyle)style
+{
+    [self hideActivity];
+
+    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+    aiView.tag = kActivityViewTag;
+    aiView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    aiView.hidesWhenStopped = YES;
+    aiView.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+    [aiView startAnimating];
+    [self addSubview:aiView];
+    SDWIRelease(aiView);
+}
+
+- (void)hideActivity
+{
+    UIActivityIndicatorView *aiView = (UIActivityIndicatorView *)[self viewWithTag:kActivityViewTag];
+    if (aiView && [aiView isKindOfClass:[UIActivityIndicatorView class]]) {
+        [aiView removeFromSuperview];
+    }
+}
+
+- (void)setImageWithURL:(NSURL *)url style:(UIActivityIndicatorViewStyle)style
+{
+    [self setImageWithURL:url placeholderImage:nil style:style];
+}
+
+- (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholder
+                  style:(UIActivityIndicatorViewStyle)style
+{
+    if (style != NSNotFound) {
+        [self showActivityWithStyle:style];
+    } else {
+        [self hideActivity];
+    }
+
+    [self setImageWithURL:url placeholderImage:placeholder];
+}
+
+- (void)setImageWithURL:(NSURL *)url
+                  style:(UIActivityIndicatorViewStyle)style
+                success:(void (^)(UIImage *))success
+                failure:(void (^)(NSError *))failure
+{
+    if (style != NSNotFound) {
+        [self showActivityWithStyle:style];
+    } else {
+        [self hideActivity];
+    }
+
+    [self setImageWithURL:url success:success failure:failure];
 }
 
 @end
