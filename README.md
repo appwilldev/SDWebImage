@@ -197,11 +197,6 @@ the URL before to use it as a cache key:
 Common Problems
 ---------------
 
-### No image appear when using UITableViewCell
-
-If choose to use a default cell template provided by UITableViewCell with SDWebImage, ensure you are
-providing a placeholder image, otherwise the cell will be initialized with no image.
-
 ### Using dynamic image size with UITableViewCell
 
 UITableView determins the size of the image by the first image set for a cell. If your remote images
@@ -256,11 +251,11 @@ Click the "+" button and select "libSDWebImageARC.a" library (use non ARC versio
 
 ![Add Library Link Dialog](http://dl.dropbox.com/u/123346/SDWebImage/07_add_library_link_dialog.jpg)
 
-If you chose to link against the ARC+MKAnnotation target, click the "+" button again and select "MapKit.framework":
+Click the "+" button again and select the "ImageIO.framework", this is needed by the progressive download feature:
 
 ![Add ImageIO Framework](http://dl.dropbox.com/u/123346/SDWebImage/08_add_imageio_framework.jpg)
 
-Click the "+" button again and select the "ImageIO.framework", this is needed by the progressive download feature:
+If you chose to link against the ARC+MKAnnotation target, click the "+" button again and select "MapKit.framework":
 
 ![Add MapKit Framework](http://dl.dropbox.com/u/123346/SDWebImage/09_add_mapkit_framework.jpg)
 

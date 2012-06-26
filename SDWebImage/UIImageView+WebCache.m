@@ -74,6 +74,7 @@
     [self hideActivity];
 
     self.image = image;
+    [self setNeedsLayout];
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
@@ -81,6 +82,7 @@
     [self hideActivity];
 
     self.image = image;
+    [self setNeedsLayout];
 }
 
 #pragma mark - Add UIActivityIndicatorView
