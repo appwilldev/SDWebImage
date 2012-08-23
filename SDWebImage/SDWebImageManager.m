@@ -421,7 +421,6 @@ static SDWebImageManager *instance;
     {
         // Store the image in the cache
         [[SDImageCache sharedImageCache] storeImage:image
-                                          imageData:downloader.imageData
                                              forKey:[self cacheKeyForURL:downloader.url]
                                              toDisk:!(options & SDWebImageCacheMemoryOnly)];
     }

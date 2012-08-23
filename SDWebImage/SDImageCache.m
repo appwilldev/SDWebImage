@@ -156,7 +156,7 @@ static natural_t get_free_memory(void)
         if (image)
         {
 #if TARGET_OS_IPHONE
-            [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)1.0) attributes:nil];
+            [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImagePNGRepresentation(image) attributes:nil];
 #else
             NSArray*  representations  = [image representations];
             NSData* jpegData = [NSBitmapImageRep representationOfImageRepsInArray: representations usingType: NSJPEGFileType properties:nil];

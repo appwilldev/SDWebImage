@@ -90,3 +90,42 @@ NS_INLINE UIImage *SDScaledImageForPath(NSString *path, NSObject *imageOrData)
 
     return SDWIReturnAutoreleased(image);
 }
+
+NS_INLINE UIImage *SDRoundedCornerImage(UIImage *image, CGFloat cornerSize)
+{
+    if (cornerSize == 0.0) {
+        return image;
+    }
+
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 image.size.width,
+                                                 image.size.height,
+                                                 CGImageGetBitsPerComponent(image.CGImage),
+                                                 0,
+                                                 CGImageGetColorSpace(image.CGImage),
+                                                 CGImageGetBitmapInfo(image.CGImage));
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    CGContextBeginPath(context);
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, CGRectGetMinX(rect), CGRectGetMinY(rect));
+    CGContextScaleCTM(context, cornerSize, cornerSize);
+    CGFloat fw = CGRectGetWidth(rect) / cornerSize;
+    CGFloat fh = CGRectGetHeight(rect) / cornerSize;
+    CGContextMoveToPoint(context, fw, fh/2);
+    CGContextAddArcToPoint(context, fw, fh, fw/2, fh, 1);
+    CGContextAddArcToPoint(context, 0, fh, 0, fh/2, 1);
+    CGContextAddArcToPoint(context, 0, 0, fw/2, 0, 1);
+    CGContextAddArcToPoint(context, fw, 0, fw, fh/2, 1);
+    CGContextClosePath(context);
+    CGContextRestoreGState(context);
+    CGContextClosePath(context);
+    CGContextClip(context);
+
+    CGContextDrawImage(context, rect, image.CGImage);
+    CGImageRef clippedImg = CGBitmapContextCreateImage(context);
+    UIImage *roundedImg = [UIImage imageWithCGImage:clippedImg];
+    CGContextRelease(context);
+    CGImageRelease(clippedImg);
+
+    return roundedImg;
+}

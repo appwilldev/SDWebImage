@@ -159,8 +159,13 @@
     }
 
     cell.textLabel.text = [NSString stringWithFormat:@"Image #%d", indexPath.row];
+    NSMutableDictionary *dict1 = [NSMutableDictionary dictionary];
+    [dict1 setObject:[NSNumber numberWithInt:15] forKey:@"cornerSize"];
+    NSMutableDictionary *dict2 = [NSMutableDictionary dictionary];
+    [dict2 setObject:[NSNumber numberWithInt:5] forKey:@"cornerSize"];
     [cell.imageView setImageWithURL:[NSURL URLWithString:[_objects objectAtIndex:indexPath.row]]
-                   placeholderImage:[UIImage imageNamed:@"placeholder"]];
+                                        placeholderImage:[UIImage imageNamed:@"placeholder"]
+                                                userInfo:indexPath.row%2==0? dict1 : dict2];
     return cell;
 }
 

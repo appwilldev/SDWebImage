@@ -43,6 +43,12 @@ static SDWebImageDecoder *sharedInstance;
         // If really have any error occurs, we use the original image at this moment
         decompressedImage = image;
     }
+    NSDictionary *info = [decodeInfo objectForKey:USER_INFO_KEY];
+    NSDictionary *userInfo = [info objectForKey:USER_INFO_KEY];
+    if (userInfo && [userInfo isKindOfClass:[NSDictionary class]]) {
+        CGFloat cornerSize = [[userInfo objectForKey:@"cornerSize"] floatValue];
+        decompressedImage = SDRoundedCornerImage(decompressedImage, cornerSize);
+    }
 
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
                           decompressedImage, DECOMPRESSED_IMAGE_KEY,

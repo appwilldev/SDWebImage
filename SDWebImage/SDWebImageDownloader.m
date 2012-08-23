@@ -232,7 +232,7 @@ NSString *const SDWebImageDownloadStopNotification = @"SDWebImageDownloadStopNot
     if ([delegate respondsToSelector:@selector(imageDownloader:didFinishWithImage:)])
     {
         UIImage *image = SDScaledImageForPath(url.absoluteString, imageData);
-        [[SDWebImageDecoder sharedImageDecoder] decodeImage:image withDelegate:self userInfo:nil];
+        [[SDWebImageDecoder sharedImageDecoder] decodeImage:image withDelegate:self userInfo:userInfo];
     }
 }
 

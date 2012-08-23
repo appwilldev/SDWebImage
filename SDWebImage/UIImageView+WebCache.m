@@ -110,6 +110,21 @@
     }
 }
 
+- (void)setImageWithURL:(NSURL *)url userInfo:(NSDictionary *)userInfo
+{
+    [self setImageWithURL:url placeholderImage:nil userInfo:userInfo];
+}
+
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder userInfo:(NSDictionary *)userInfo
+{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager cancelForDelegate:self];
+    self.image = placeholder;
+    if (url) {
+        [manager downloadWithURL:url delegate:self options:0 userInfo:userInfo];
+    }
+}
+
 - (void)setImageWithURL:(NSURL *)url style:(UIActivityIndicatorViewStyle)style
 {
     [self setImageWithURL:url placeholderImage:nil style:style];
