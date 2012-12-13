@@ -126,8 +126,12 @@
        placeholderImage:(UIImage *)placeholder
                   style:(UIActivityIndicatorViewStyle)style;
 - (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholder
                   style:(UIActivityIndicatorViewStyle)style
-                success:(void (^)(UIImage *image))success
-                failure:(void (^)(NSError *error))failure;
+                options:(SDWebImageOptions)options;
+- (void)setImageWithURL:(NSURL *)url
+                  style:(UIActivityIndicatorViewStyle)style
+                success:(SDWebImageSuccessBlock)success
+                failure:(SDWebImageFailureBlock)failure;
 
 @end

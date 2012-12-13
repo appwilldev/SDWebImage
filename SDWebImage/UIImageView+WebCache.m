@@ -64,9 +64,12 @@
 
 - (void)cancelCurrentImageLoad
 {
-    [self hideActivity];
+    @synchronized(self)
+    {
+        [self hideActivity];
 
-    [[SDWebImageManager sharedManager] cancelForDelegate:self];
+        [[SDWebImageManager sharedManager] cancelForDelegate:self];
+    }
 }
 
 - (void)webImageManager:(SDWebImageManager *)imageManager didProgressWithPartialImage:(UIImage *)image forURL:(NSURL *)url
@@ -134,19 +137,30 @@
        placeholderImage:(UIImage *)placeholder
                   style:(UIActivityIndicatorViewStyle)style
 {
+    [self setImageWithURL:url
+         placeholderImage:placeholder
+                    style:style
+                  options:0];
+}
+
+- (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholder
+                  style:(UIActivityIndicatorViewStyle)style
+                options:(SDWebImageOptions)options
+{
     if (style != NSNotFound) {
         [self showActivityWithStyle:style];
     } else {
         [self hideActivity];
     }
 
-    [self setImageWithURL:url placeholderImage:placeholder];
+    [self setImageWithURL:url placeholderImage:placeholder options:options];
 }
 
 - (void)setImageWithURL:(NSURL *)url
                   style:(UIActivityIndicatorViewStyle)style
-                success:(void (^)(UIImage *))success
-                failure:(void (^)(NSError *))failure
+                success:(SDWebImageSuccessBlock)success
+                failure:(SDWebImageFailureBlock)failure
 {
     if (style != NSNotFound) {
         [self showActivityWithStyle:style];
